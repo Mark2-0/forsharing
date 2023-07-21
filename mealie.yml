@@ -1,0 +1,41 @@
+version: '3.7'
+
+########################### NETWORKS
+# Create tgwb-dock network
+# docker network create tgwb-dock
+
+services:
+
+  mealie-frontend:
+    image: hkotel/mealie:frontend-nightly
+    container_name: mealie-frontend
+    restart: unless-stopped
+    depends_on:
+      - mealie-api
+    environment:
+    # Set Frontend ENV Variables Here
+      - API_URL=http://mealie-api:9000 #
+    ports:
+      - 9925:3000 #
+
+    volumes:
+      - mealie-data:/app/data/ #
+
+  mealie-api:
+    image: hkotel/mealie:api-nightly
+    container_name: mealie-api
+    restart: unless-stopped
+    volumes:
+      - mealie-data:/app/data/
+    environment:
+    # Set Backend ENV Variables Here
+      - ALLOW_SIGNUP=true
+      - MAX_WORKERS=1
+      - WEB_CONCURRENCY=1
+      - BASE_URL=https://mealie.mywebsite.com
+      - TOKEN_TIME=730
+
+
+volumes:
+  mealie-data:
+    driver: local
