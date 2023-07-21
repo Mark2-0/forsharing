@@ -1,9 +1,5 @@
 version: '3.7'
 
-########################### NETWORKS
-# Create tgwb-dock network
-# docker network create tgwb-dock
-
 services:
 
   mealie-frontend:
